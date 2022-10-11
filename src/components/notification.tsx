@@ -27,6 +27,7 @@ const Container = styled.div `
     position: relative;
     padding: 2px 8px 2px 8px;
     border-radius: 5px;
+    min-height: 5rem;
 `
 const Profile = styled.img `
     width: 2.5rem;
@@ -41,8 +42,16 @@ const Details = styled.div`
     position: relative;
 
 `
+type contentProps = {
+    picture: boolean;
+}
 const Content = styled.p `
     color: ${grayishblue};
+
+    @media screen and (max-width: 600px){
+        width:${({picture} : contentProps) => picture ? '90%' : '100%'};
+    }
+    
 `
 const Name = styled.span`
     color: ${verydarkblue};
@@ -93,13 +102,14 @@ const Message = styled.div `
     }
 `
 const Picture = styled.img `
-    width: 3rem;
-    height: 3rem;
+    width: 5rem;
+    height: 5rem;
     border-radius: 5px;
     position: absolute;
     right: 0;
     top: 0;
     cursor: pointer;
+
 `
 
 
@@ -113,8 +123,8 @@ function Notification(props : notificationProps){
   <>
   <Container read={read}>
     <Profile src={profilePic} alt='profile picture'/>
-    <Details>
-        <Content>
+    <Details >
+        <Content picture={picture!== undefined}>
             <Name>{name}</Name>
             <span>{notification}</span>
             {
@@ -127,7 +137,7 @@ function Notification(props : notificationProps){
                 !read && <Unread><Dot/></Unread>
             }
         </Content>
-        <Content>{createdAt}</Content>
+        <Content picture={false}>{createdAt}</Content>
         {
             message && <Message>{message}</Message>
         }
